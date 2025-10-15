@@ -25,7 +25,8 @@ export const createUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email: normalizedEmail,
-    password: hashedPassword
+    password: hashedPassword,
+
   })
   
   const token = generateToken(user)
