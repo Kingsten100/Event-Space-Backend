@@ -2,7 +2,7 @@ import AsyncHandler from "express-async-handler";
 import Listing from "../models/listing.model.js";
 import User from "../models/user.model.js";
 
-
+// ==== CREATE LISTING ==== //
 export const createListing = AsyncHandler(async(req, res) => {
   const {title, description, address, location, amenities, price, images, capacity, category, rules} = req.body
 
@@ -39,3 +39,14 @@ const user = await User.findById(userId);
     listing
   })
 })
+
+// ==== GET LISTINGS ==== //
+
+export const getListings = AsyncHandler(async(req, res) => {
+
+  const listings = await Listing.find()
+
+  res.status(200).json(listings)
+ 
+})
+
