@@ -1,0 +1,42 @@
+import AsyncHandler from 'express-async-handler'
+import Listing from '../models/listing.model.js'
+import Booking from '../models/booking.model.js'
+
+// ==== CREATE BOOKING ==== //
+export const createBooking = AsyncHandler(async(req, res) => {
+
+  const { listingId, startDate, endDate, totalPrice } = req.body
+
+  const userId = req.user._id
+
+  if(!listingId || !startDate || !endDate || !totalPrice){
+    return res.status(400).json({ message: 'All fields are required'})
+  }
+
+  const listing = await Listing.findById(listingId)
+
+  if(!listing){
+    return res.status(404).json({ message: 'No listing found'})
+  }
+
+  const doubleBooking = await Booking.findOne({
+    listing: listingId,
+    $or: [
+      {startDate: { $lte: new Date(endDate) }, endDate: { $gte: new Date(startDate)}}
+    ]
+  })
+
+  if(doubleBooking){
+    return res.status(400).json({ message: 'Listing not available for these dates'})
+  }
+
+  const booking = await Booking.create({
+    listing: listingId,
+    user: userId,
+    startDate,
+    endDate,
+    totalPrice
+  })
+
+  res.status(201).json({ message: 'Booking created successfully', booking})
+})
