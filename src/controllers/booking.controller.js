@@ -48,11 +48,31 @@ export const getMyBookings = AsyncHandler(async(req, res) => {
 
   const myBookings = await Booking.find({ user: userId })
 
-  console.log(userId)
-
   if(!myBookings || myBookings.length === 0){
     return res.status(404).json({ message: 'No bookings found'})
   }
 
   res.status(200).json(myBookings)
+})
+
+// ==== DELETE BOOKING ==== //
+export const deleteBooking = AsyncHandler(async(req, res) => {
+  const { id } = req.params
+
+  const userId = req.user._id
+
+  const booking = await Booking.findById(id)
+
+  if(!booking){
+    return res.status(404).json({ message: 'No booking found'})
+  }
+
+  if(booking.user.toString() !== userId.toString()){
+    return res.status(400).json({ message: 'You are not authorized or no booking was found'})
+  }
+
+  await Booking.deleteOne(booking)
+
+  res.status(209).json({ message: 'Booking deleted'})
+
 })
