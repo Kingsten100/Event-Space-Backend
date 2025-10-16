@@ -40,3 +40,19 @@ export const createBooking = AsyncHandler(async(req, res) => {
 
   res.status(201).json({ message: 'Booking created successfully', booking})
 })
+
+// ==== GET MY BOOKINGS ==== //
+export const getMyBookings = AsyncHandler(async(req, res) => {
+
+  const userId = req.user._id
+
+  const myBookings = await Booking.find({ user: userId })
+
+  console.log(userId)
+
+  if(!myBookings || myBookings.length === 0){
+    return res.status(404).json({ message: 'No bookings found'})
+  }
+
+  res.status(200).json(myBookings)
+})
