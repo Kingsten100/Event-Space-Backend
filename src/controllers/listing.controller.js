@@ -113,3 +113,21 @@ export const updateMyListing = AsyncHandler(async(req, res) => {
 
   res.status(200).json(updatedListing)
 })
+
+// ==== DELETE LISTING ==== //
+export const deleteListing = AsyncHandler(async(req, res) => {
+
+  const { id } = req.params
+
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return res.status(400).json({ message: 'Invalid listing Id'})
+  }
+
+  const deletedListing = await Listing.findByIdAndDelete(id)
+
+  if(!deleteListing){
+    return res.status(404).json({ message: 'No listing found'})
+  }
+
+  res.status(204).json({ message: 'Listing is deleted'})
+})

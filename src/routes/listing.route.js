@@ -1,6 +1,6 @@
 import express from 'express'
 import { verifyToken } from '../middleware/auth.middleware.js'
-import { createListing, getListingById, getListings, getMyListings, updateMyListing } from '../controllers/listing.controller.js'
+import { createListing, deleteListing, getListingById, getListings, getMyListings, updateMyListing } from '../controllers/listing.controller.js'
 
 const router = express.Router()
 
@@ -12,6 +12,7 @@ router.get('/mylistings', verifyToken, getMyListings)
 router.patch('/:id/edit', verifyToken, updateMyListing)
 router.put('/:id/edit', verifyToken, updateMyListing)
 
+router.delete('/:id', verifyToken, deleteListing)
 
 router.get('/:id', getListingById)
 
