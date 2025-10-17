@@ -76,3 +76,24 @@ export const deleteBooking = AsyncHandler(async(req, res) => {
   res.status(209).json({ message: 'Booking deleted'})
 
 })
+
+// ==== SIMULATE PAYMENT ==== //
+export const simulatePayment = AsyncHandler(async(req, res) => {
+  
+  const { bookingId, paymentMethod } = req.body
+  const userId = req.user._id
+
+  const booking = await Booking.findOne({ _id: bookingId, user: userId})
+
+  if(!booking){
+    return res.status(404).json({ message: 'No booking found'})
+  }
+
+  booking.status = "confirmed"
+  booking.paymentStatus = "paid"
+  booking.paymentMethod = paymentMethod || "simulated"
+
+  await booking.save()
+
+  res.status(200).json({ message: 'Payment successful (simulated)'})
+})
