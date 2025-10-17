@@ -2,6 +2,7 @@ import AsyncHandler from "express-async-handler";
 import Listing from "../models/listing.model.js";
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
+import Booking from "../models/booking.model.js";
 
 // ==== CREATE LISTING ==== //
 export const createListing = AsyncHandler(async(req, res) => {
@@ -130,4 +131,18 @@ export const deleteListing = AsyncHandler(async(req, res) => {
   }
 
   res.status(204).json({ message: 'Listing is deleted'})
+})
+
+// ==== LISTING AVAILABILITY ==== //
+export const listingAvailability = AsyncHandler(async(req, res) => {
+  const { id } = req.params
+
+  const booking = await Booking.find({
+    listing: id,
+    status: { $in: ["pending", "confirmed"] }
+  }).select("startDate endDate status")
+
+  res.status(200).json(booking)
+
+
 })
