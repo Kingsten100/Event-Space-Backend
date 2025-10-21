@@ -32,3 +32,19 @@ export const createReview = AsyncHandler(async(req, res) => {
 
   res.status(201).json({ message: 'Review added successfully', review})
 })
+
+
+// ==== GET REVIEWS FOR A LISTING ==== //
+export const getReviews = AsyncHandler(async(req, res) => {
+  const listingId  = req.params.id
+
+  const reviews = await Review.find({ listing: listingId})
+    .populate("user", "name")
+    .sort({ createdAt: -1})
+
+  if(!reviews || reviews.length === 0){
+    return res.status(404).json({ message: 'No reviews found' })
+  }
+
+  res.status(200).json(reviews)
+})
