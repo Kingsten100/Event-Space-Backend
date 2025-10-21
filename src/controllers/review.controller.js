@@ -53,6 +53,30 @@ export const getReviews = AsyncHandler(async(req, res) => {
 
 
 // ==== DELETE REVIEW ==== //
+export const deleteReview = AsyncHandler(async(req, res) => {
+  const reviewId  = req.params.id
 
-// await Review.findByIdAndDelete(reviewId);
-// await Review.updateListingRating(listingId)
+  const userId = req.user._id
+
+  if(!reviewId){
+    return res.status(404).json({ message: 'Review ID is required'})
+  }
+
+  const review = await Review.findById(reviewId)
+
+  if(!review){
+    return res.status(404).json({ message: 'No review found'})
+  }
+
+    if (review.user.toString() !== userId.toString()) {
+    return res.status(403).json({ message: "You are not allowed to delete this review" });
+  }
+
+  const listingId = review._id
+
+  await review.deleteOne()
+  await Review.updateListingRating(listingId)
+
+  res.status(200).json({ message: 'Review deleted', reviewId})
+
+})
