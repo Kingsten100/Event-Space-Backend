@@ -29,6 +29,8 @@ export const createReview = AsyncHandler(async(req, res) => {
     comment
   })
 
+  await Review.updateListingRating(listingId)
+
 
   res.status(201).json({ message: 'Review added successfully', review})
 })
@@ -48,3 +50,9 @@ export const getReviews = AsyncHandler(async(req, res) => {
 
   res.status(200).json(reviews)
 })
+
+
+// ==== DELETE REVIEW ==== //
+
+// await Review.findByIdAndDelete(reviewId);
+// await Review.updateListingRating(listingId)

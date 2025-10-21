@@ -13,9 +13,12 @@ const listingSchema = new mongoose.Schema({
   images: [String],
   capacity: { type: Number, required: true},
   category: { type: String, enum: [...Object.values(venueType)], default: venueType.OTHER},
-  rules: { alcoholAllowed: {type: Boolean, default: false}, petsAllowed: {type: Boolean, default: false} }
+  rules: { alcoholAllowed: {type: Boolean, default: false}, petsAllowed: {type: Boolean, default: false} },
+  averageRating: { type: Number, default: 0},
+  ratingCount: { type: Number, default: 0}
 
 }, {timestamps: true})
+
 
 const Listing = mongoose.model( 'Listing', listingSchema)
 export default Listing
