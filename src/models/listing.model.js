@@ -19,6 +19,14 @@ const listingSchema = new mongoose.Schema({
 
 }, {timestamps: true})
 
+listingSchema.index({
+  title: "text",
+  description: "text",
+  address: "text",
+  "location.city": "text",
+  "location.region": "text"
+})
+
 
 const Listing = mongoose.model( 'Listing', listingSchema)
 export default Listing

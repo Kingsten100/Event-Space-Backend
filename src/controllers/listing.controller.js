@@ -146,3 +146,47 @@ export const listingAvailability = AsyncHandler(async(req, res) => {
 
 
 })
+
+// ==== SEARCH & FILTER ==== //
+
+export const getFilteredListings = AsyncHandler(async(req, res) => {
+
+  const {
+    search,
+    minPrice,
+    maxPrice,
+    capacity,
+    category,
+    amenities,
+    city
+  } = req.query
+
+  const query = {}
+
+  if(search){
+    query.$text = { $search: search}
+  }
+
+  if(minPrice || maxPrice){
+    query.price = {}
+    if(minPrice) query.price.$gte = Number(minPrice)
+    if(maxPrice) query.price.$lte = Number(maxPrice)
+  }
+
+  if(capacity){
+    query.capacity = { $gte: Number(capacity)}
+  }
+
+  if(amenities) {
+    const amenitiesArray = Array.isArray(amenities) ? amenities : [amenities]
+    query.amenities = { $all: amenitiesArray}
+  }
+
+  if(city){
+    query["location.city"] = { $regex: new RegExp(city, "i")}
+  }
+
+  const listings = await Listing.find(query).sort({ createdAt: -1})
+
+  res.status(200).json(listings)
+})
