@@ -31,7 +31,7 @@ export const createUser = asyncHandler(async (req, res) => {
   
   const token = generateToken(user)
 
-  res.status(201).json({ _id: user._id, name: user.name, token})
+  res.status(201).json({ _id: user._id, name: user.name, email: user.email, isHost: user.isHost, token})
 })
 
 // ===== LOGIN USER ===== //
@@ -57,7 +57,7 @@ export const login = asyncHandler(async (req, res) => {
 
   const token = generateToken(user)
 
-  res.status(200).json({ _id: user._id, name: user.name, token})
+  res.status(200).json({ _id: user._id, name: user.name, email: user.email, isHost: user.isHost, token})
 })
 
 
@@ -68,9 +68,8 @@ export const getUser = asyncHandler(async (req, res) => {
   if(!req.user){
     return res.status(404).json({ message: 'No user found'})
   }
-
-  res.status(200).json(req.user)
   
+  res.status(200).json({ user: req.user})
 })
 
 // ==== UPDATE USER ==== //

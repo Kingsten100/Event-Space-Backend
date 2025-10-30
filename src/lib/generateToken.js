@@ -5,6 +5,8 @@ const generateToken = (user) => {
     userInfo:{
       _id: user.id,
       name: user.name,
+      email: user.email,
+      isHost: user.isHost
     }
   }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h'})
 }
