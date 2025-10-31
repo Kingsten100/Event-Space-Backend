@@ -1,12 +1,18 @@
 
 export const amenities = {
-  WIFI: 'Wifi',
+  WIFI: 'WiFi',
   PROJECTOR: 'Projector',
   KITCHEN: 'Kitchen',
-  SOUNDSYSTEM: 'SoundSystem',
+  SOUNDSYSTEM: 'Sound System',
   PARKING: 'Parking',
   STAGE: 'Stage',
-  LIGHTING: 'Lighting',
+  LIGHTING: 'Lighting Equipment',
   ELEVATOR: 'Elevator',
-  CHAIRS: 'Chairs'
+  CHAIRS: 'Chairs',
+  AIRCONDITIONING: 'Air Conditioning',
+  BAR: 'Bar',
+  GARDENACCESS: 'Garden Access',
+  CATERING: 'Catering Service',
+  WHITEBOARD: 'Whiteboard',
+  VIDEOCONFERENCING: 'Video Conferencing'
 }

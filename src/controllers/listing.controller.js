@@ -11,7 +11,6 @@ export const createListing = AsyncHandler(async(req, res) => {
   const userId = req.user._id
 
   if(!title || !description || !address || !location || !amenities || !price || !images || !capacity || !category || !rules){
-    console.log(isHost)
     return res.status(400).json({ message: 'All fields are required'})
   }
   
@@ -188,5 +187,21 @@ export const getFilteredListings = AsyncHandler(async(req, res) => {
 
   const listings = await Listing.find(query).sort({ createdAt: -1})
 
+  res.status(200).json(listings)
+})
+
+// ==== GET LISTINGS BY CATEGORY ==== //
+export const getListingsByCategory = AsyncHandler(async (req, res) => {
+  const { category } = req.query;
+  console.log(category)
+
+  let filter = {};
+
+  if (category) {
+    filter.category = { $regex: new RegExp(`^${category}$`, "i") };
+  }
+
+  console.log(filter)
+  const listings = await Listing.find(filter).limit(8)
   res.status(200).json(listings)
 })
