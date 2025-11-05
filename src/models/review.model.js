@@ -10,15 +10,15 @@ const reviewSchema = new mongoose.Schema({
 
 // ==== MODELLMETOD FÖR ATT RÄKNA UT SNITT BETYGET FÖR VARJE LISTING ==== // 
 reviewSchema.statics.updateListingRating = async function (listingId) {
-  const reviews = await this.find({ listing: listingId });
+  const reviews = await this.find({ listing: listingId })
 
   if (reviews.length === 0) {
-    await Listing.findByIdAndUpdate(listingId, { averageRating: 0, reviewsCount: 0 });
+    await Listing.findByIdAndUpdate(listingId, { averageRating: 0, reviewsCount: 0 })
     return;
   }
 
-  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
-  const avg = total / reviews.length;
+  const total = reviews.reduce((sum, r) => sum + r.rating, 0)
+  const avg = total / reviews.length
 
   await Listing.findByIdAndUpdate(listingId, {
     averageRating: avg,
