@@ -155,12 +155,18 @@ export const getFilteredListings = AsyncHandler(async(req, res) => {
     minPrice,
     maxPrice,
     capacity,
-    category,
+    categories,
     amenities,
     city
   } = req.query
 
   const query = {}
+
+  const parseArrayParam = (param) => {
+    if (!param) return undefined
+    if(Array.isArray(param)) return param
+    return String(param).split(",")
+  }
 
   if(search){
     query.$text = { $search: search}
@@ -176,9 +182,14 @@ export const getFilteredListings = AsyncHandler(async(req, res) => {
     query.capacity = { $gte: Number(capacity)}
   }
 
-  if(amenities) {
-    const amenitiesArray = Array.isArray(amenities) ? amenities : [amenities]
-    query.amenities = { $all: amenitiesArray}
+  const categoriesArray = parseArrayParam(categories);
+  if(categoriesArray && categoriesArray.length > 0) {
+    query.category = { $in: categoriesArray };
+  }
+
+  const amenitiesArray = parseArrayParam(amenities);
+  if(amenitiesArray && amenitiesArray.length > 0) {
+    query.amenities = { $all: amenitiesArray };
   }
 
   if(city){
