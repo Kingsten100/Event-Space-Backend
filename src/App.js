@@ -3,6 +3,7 @@ import userRoutes from './routes/user.route.js'
 import listingRoutes from './routes/listing.route.js'
 import bookingRoutes from './routes/booking.route.js'
 import reviewRoutes from './routes/review.route.js'
+import filterRoutes from './routes/filters.route.js'
 import cors from 'cors'
 
 
@@ -21,5 +22,7 @@ app.use('/api/listing', listingRoutes)
 app.use('/api/bookings', bookingRoutes)
 
 app.use('/api/review', reviewRoutes)
+
+app.use('/api/filters', filterRoutes)
 
 export default app
