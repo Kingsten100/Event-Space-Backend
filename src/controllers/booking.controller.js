@@ -46,7 +46,7 @@ export const getMyBookings = AsyncHandler(async(req, res) => {
 
   const userId = req.user._id
 
-  const myBookings = await Booking.find({ user: userId })
+  const myBookings = await Booking.find({ user: userId }).populate("listing")
 
   if(!myBookings || myBookings.length === 0){
     return res.status(404).json({ message: 'No bookings found'})
