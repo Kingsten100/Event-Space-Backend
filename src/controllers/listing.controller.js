@@ -10,9 +10,11 @@ export const createListing = AsyncHandler(async(req, res) => {
 
   const userId = req.user._id
 
-  if(!title || !description || !address || !location || !amenities || !price || !images || !capacity || !category || !rules){
-    return res.status(400).json({ message: 'All fields are required'})
-  }
+
+  if (!title || !description || !address || !location?.city || !location?.region || !Array.isArray(amenities) || !amenities.length || !price || !Array.isArray(images) || !images.length || !capacity || !category || !rules) {
+  return res.status(400).json({ message: 'All fields are required' });
+}
+
   
   const listing = await Listing.create({
   user: userId,
